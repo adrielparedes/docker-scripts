@@ -1,0 +1,16 @@
+#! /bin/bash
+
+EXTERNAL_WORKSPACE=/data/workspace
+INTERNAL_WORKSPACE=/workspace
+EXTERNAL_JENKINS_HOME=/data/docker/jenkins
+INTERNAL_JENKINS_HOME=/var/jenkins_home
+EXTERNAL_MAVEN_REPO=$HOME/.m2/repository
+
+docker run -d \
+-p 7070:8080 \
+-p 50000:50000 \
+-v $EXTERNAL_WORKSPACE:$INTERNAL_WORKSPACE \
+-v $EXTERNAL_JENKINS_HOME:$INTERNAL_JENKINS_HOME \
+-v $EXTERNAL_MAVEN_REPO:$INTERNAL_JENKINS_HOME/.m2/repository \
+--name=jenkins \
+jenkins:latest
