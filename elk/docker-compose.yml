@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  logstash:
+    image: 'docker.elastic.co/logstash/logstash:6.6.0'
+    volumes:
+      - './logstash/pipeline/:/usr/share/logstash/pipeline/'
+      - './logstash/logs/:/logs'
+    environment:
+      - config.reload.automatic=true
+    links:
+      - 'elasticsearch:elasticsearch'
+    depends_on:
+      - elasticsearch
+  elasticsearch:
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:6.6.0'
+    environment:
+      - cluster.name=elk-cluster
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  kibana:
+    image: 'docker.elastic.co/kibana/kibana:6.6.0'
+    ports:
+      - '5601:5601'
+    links:
+      - 'elasticsearch:elasticsearch'
+    depends_on:
+      - elasticsearch
+   
